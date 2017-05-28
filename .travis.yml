@@ -5,5 +5,3 @@ node_js:
 
 os:
   - osx
-
-before_install: node install.js
