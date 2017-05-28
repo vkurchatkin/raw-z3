@@ -1,0 +1,15 @@
+{
+  "name": "raw-z3",
+  "version": "0.0.1",
+  "description": "Raw Z3 bindings",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vladimir Kurchatkin <vladimir.kurchatkin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "nan": "2.6.2",
+    "yauzl": "2.8.0"
+  }
+}
