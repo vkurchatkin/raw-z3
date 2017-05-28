@@ -6,4 +6,4 @@ node_js:
 os:
   - osx
 
-before_script: node install.js
+before_install: node install.js
