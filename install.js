@@ -114,7 +114,6 @@ const unzip = file => new Promise((resolve, reject) => {
   });
 });
 
-
 download(url)
   .then(unzip)
   .then(name => {
@@ -125,6 +124,3 @@ download(url)
       throw err;
     });
   });
-
-
-unzip('z3.zip')
