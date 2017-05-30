@@ -1270,6 +1270,8 @@ declare export function Z3_mk_not(c: Z3_context,a: Z3_ast,): Z3_ast;
 declare export function Z3_mk_iff(c: Z3_context,t1: Z3_ast,t2: Z3_ast,): Z3_ast;
 declare export function Z3_mk_and(c: Z3_context,num_args: number,args: Array<Z3_ast>,): Z3_ast;
 declare export function Z3_mk_or(c: Z3_context,num_args: number,args: Array<Z3_ast>,): Z3_ast;
+declare export function Z3_get_symbol_kind(c: Z3_context,s: Z3_symbol,): Z3_symbol_kind;
+declare export function Z3_get_symbol_int(c: Z3_context,s: Z3_symbol,): number;
 declare export function Z3_mk_solver(c: Z3_context,): Z3_solver;
 declare export function Z3_solver_assert(c: Z3_context,s: Z3_solver,a: Z3_ast,): void;
 declare export function Z3_solver_check(c: Z3_context,s: Z3_solver,): Z3_lbool;

@@ -130,6 +130,8 @@ function discoverBindings(
     'Z3_mk_solver',
     'Z3_solver_assert',
     'Z3_solver_check',
+    'Z3_get_symbol_kind',
+    'Z3_get_symbol_int',
   ];
 
   // find enums
