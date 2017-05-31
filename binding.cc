@@ -6,6 +6,10 @@
 using namespace v8;
 using namespace Nan;
 
+NAN_METHOD(Z3_global_param_set_binding) {
+  Z3_global_param_set(*Utf8String(info[0]), *Utf8String(info[1]));
+}
+
 NAN_METHOD(Z3_mk_config_binding) {
   auto v1 = Z3_mk_config();
   auto v2 = New<ObjectTemplate>();
@@ -30,6 +34,11 @@ NAN_METHOD(Z3_mk_context_binding) {
 
 NAN_METHOD(Z3_mk_int_symbol_binding) {
   auto v1 = Z3_mk_int_symbol(static_cast<Z3_context>(GetInternalFieldPointer(info[0].As<Object>(), 0)), info[1].As<Int32>()->Value());
+  info.GetReturnValue().Set(New<External>(v1));
+}
+
+NAN_METHOD(Z3_mk_string_symbol_binding) {
+  auto v1 = Z3_mk_string_symbol(static_cast<Z3_context>(GetInternalFieldPointer(info[0].As<Object>(), 0)), *Utf8String(info[1]));
   info.GetReturnValue().Set(New<External>(v1));
 }
 
@@ -115,6 +124,11 @@ NAN_METHOD(Z3_get_symbol_int_binding) {
   info.GetReturnValue().Set(New<Int32>(v1));
 }
 
+NAN_METHOD(Z3_get_symbol_string_binding) {
+  auto v1 = Z3_get_symbol_string(static_cast<Z3_context>(GetInternalFieldPointer(info[0].As<Object>(), 0)), static_cast<Z3_symbol>(info[1].As<External>()->Value()));
+  info.GetReturnValue().Set(New<String>(v1).ToLocalChecked());
+}
+
 NAN_METHOD(Z3_mk_solver_binding) {
   auto v1 = Z3_mk_solver(static_cast<Z3_context>(GetInternalFieldPointer(info[0].As<Object>(), 0)));
   auto v2 = New<ObjectTemplate>();
@@ -134,10 +148,12 @@ NAN_METHOD(Z3_solver_check_binding) {
 }
 
 NAN_MODULE_INIT(Init) {
+  Nan::Set(target, New<String>("Z3_global_param_set").ToLocalChecked(), New<FunctionTemplate>(Z3_global_param_set_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_mk_config").ToLocalChecked(), New<FunctionTemplate>(Z3_mk_config_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_del_config").ToLocalChecked(), New<FunctionTemplate>(Z3_del_config_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_mk_context").ToLocalChecked(), New<FunctionTemplate>(Z3_mk_context_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_mk_int_symbol").ToLocalChecked(), New<FunctionTemplate>(Z3_mk_int_symbol_binding)->GetFunction());
+  Nan::Set(target, New<String>("Z3_mk_string_symbol").ToLocalChecked(), New<FunctionTemplate>(Z3_mk_string_symbol_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_mk_bool_sort").ToLocalChecked(), New<FunctionTemplate>(Z3_mk_bool_sort_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_mk_const").ToLocalChecked(), New<FunctionTemplate>(Z3_mk_const_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_mk_not").ToLocalChecked(), New<FunctionTemplate>(Z3_mk_not_binding)->GetFunction());
@@ -146,6 +162,7 @@ NAN_MODULE_INIT(Init) {
   Nan::Set(target, New<String>("Z3_mk_or").ToLocalChecked(), New<FunctionTemplate>(Z3_mk_or_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_get_symbol_kind").ToLocalChecked(), New<FunctionTemplate>(Z3_get_symbol_kind_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_get_symbol_int").ToLocalChecked(), New<FunctionTemplate>(Z3_get_symbol_int_binding)->GetFunction());
+  Nan::Set(target, New<String>("Z3_get_symbol_string").ToLocalChecked(), New<FunctionTemplate>(Z3_get_symbol_string_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_mk_solver").ToLocalChecked(), New<FunctionTemplate>(Z3_mk_solver_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_solver_assert").ToLocalChecked(), New<FunctionTemplate>(Z3_solver_assert_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_solver_check").ToLocalChecked(), New<FunctionTemplate>(Z3_solver_check_binding)->GetFunction());

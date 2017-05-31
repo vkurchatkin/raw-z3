@@ -8,6 +8,8 @@ const {
   Z3_mk_int_symbol,
   Z3_get_symbol_kind,
   Z3_get_symbol_int,
+  Z3_mk_string_symbol,
+  Z3_get_symbol_string,
   Z3_del_config,
   Z3_mk_bool_sort,
   Z3_mk_const,
@@ -20,6 +22,7 @@ const {
   Z3_solver_check,
 
   Z3_INT_SYMBOL,
+  Z3_STRING_SYMBOL,
   Z3_L_FALSE,
 } = require('./index.js');
 
@@ -31,6 +34,15 @@ const ctx = Z3_mk_context(config);
 const s1 = Z3_mk_int_symbol(ctx, 42);
 assert(Z3_get_symbol_kind(ctx, s1) === Z3_INT_SYMBOL);
 assert(Z3_get_symbol_int(ctx, s1) === 42);
+
+const s2 = Z3_mk_string_symbol(ctx, 'foo');
+assert(Z3_get_symbol_kind(ctx, s2) === Z3_STRING_SYMBOL);
+assert(Z3_get_symbol_string(ctx, s2) === 'foo');
+
+const s3 = Z3_mk_string_symbol(ctx, 'тест');
+assert(Z3_get_symbol_string(ctx, s3) === 'тест');
+
+
 
 function deMorgan() {
    const cfg = Z3_mk_config();

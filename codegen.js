@@ -16,6 +16,7 @@ type Type =
   | { t: 'Int' }
   | { t: 'Uint' }
   | { t: 'Void' }
+  | { t: 'String' }
 ;
 
 type ArgMode =
@@ -83,6 +84,10 @@ function resolveType(typeStr, types) {
     return { t: 'Void' };
   }
 
+  if (typeStr === 'STRING') {
+    return { t: 'String' };
+  }
+
   if (types[typeStr]) {
     return {
       t: 'Object',
@@ -133,6 +138,9 @@ function discoverBindings(
     'Z3_get_symbol_kind',
     'Z3_get_symbol_int',
     'Z3_del_config',
+    'Z3_global_param_set',
+    'Z3_mk_string_symbol',
+    'Z3_get_symbol_string',
   ];
 
   // find enums
@@ -331,6 +339,7 @@ function getNativeType(
     case 'Uint': return 'unsigned';
     case 'Symbol': return 'Z3_symbol';
     case 'Void': throw new Error('Void should not be serialized');
+    case 'String': return `Z3_string`;
     default:
       /*::(type.t: null)*/;
       throw new Error(`Unexpected type ${type.t}`);
@@ -394,6 +403,7 @@ function unwrapType(
     case 'Uint': return `${wrappedExpression}.As<Uint32>()->Value()`;
     case 'Symbol': return `static_cast<Z3_symbol>(${wrappedExpression}.As<External>()->Value())`;
     case 'Void': throw new Error('Void should not be serialized');
+    case 'String': return `*Utf8String(${wrappedExpression})`;
     default:
       /*::(type.t: null)*/;
       throw new Error(`Unexpected type ${type.t}`);
@@ -426,6 +436,7 @@ function wrapType(
     case 'Uint': return `New<Uint32>(${unwrappedId})`;
     case 'Symbol': return `New<External>(${unwrappedId})`;
     case 'Void': throw new Error('Void should not be serialized');
+    case 'String': return `New<String>(${unwrappedId}).ToLocalChecked()`;
 
     default:
       /*::(type.t: null)*/;
@@ -450,7 +461,7 @@ function typeToFlow(
       return 'number';
     case 'Symbol': return 'Z3_symbol';
     case 'Void': return 'void';
-
+    case 'String': return 'string';
     default:
       /*::(type.t: null)*/;
       throw new Error(`Unexpected type ${type.t}`);
