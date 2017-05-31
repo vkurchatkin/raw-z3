@@ -1262,6 +1262,7 @@ declare class Z3_optimize{}
 declare class Z3_param_descrs{}
 declare class Z3_rcf_num{}
 declare export function Z3_mk_config(): Z3_config;
+declare export function Z3_del_config(c: Z3_config,): void;
 declare export function Z3_mk_context(c: Z3_config,): Z3_context;
 declare export function Z3_mk_int_symbol(c: Z3_context,i: number,): Z3_symbol;
 declare export function Z3_mk_bool_sort(c: Z3_context,): Z3_sort;
