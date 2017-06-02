@@ -141,6 +141,15 @@ function discoverBindings(
     'Z3_global_param_set',
     'Z3_mk_string_symbol',
     'Z3_get_symbol_string',
+    'Z3_set_param_value',
+    'Z3_mk_int_sort',
+    'Z3_mk_add',
+    'Z3_mk_eq',
+    'Z3_mk_int',
+    'Z3_solver_get_model',
+    'Z3_model_to_string',
+    'Z3_model_get_const_interp',
+    'Z3_ast_to_string',
   ];
 
   // find enums
@@ -715,7 +724,10 @@ function writeBindingsFlowDecl(
   writer.write('/*::\n');
 
   for (const type of bindings.types) {
-    writer.write(`declare class ${type}{}\n`);
+    writer.write(`
+      declare class ${type}{}
+      export type { ${type} };
+    `);
   }
 
   for (const func of bindings.funcs) {

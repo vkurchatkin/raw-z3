@@ -1235,48 +1235,84 @@ module.exports.Z3_GOAL_UNDER_OVER = 3;
 
 /*::
 declare class Z3_symbol{}
+export type { Z3_symbol };
 declare class Z3_config{}
+export type { Z3_config };
 declare class Z3_context{}
+export type { Z3_context };
 declare class Z3_ast{}
+export type { Z3_ast };
 declare class Z3_app{}
+export type { Z3_app };
 declare class Z3_sort{}
+export type { Z3_sort };
 declare class Z3_func_decl{}
+export type { Z3_func_decl };
 declare class Z3_pattern{}
+export type { Z3_pattern };
 declare class Z3_model{}
+export type { Z3_model };
 declare class Z3_literals{}
+export type { Z3_literals };
 declare class Z3_constructor{}
+export type { Z3_constructor };
 declare class Z3_constructor_list{}
+export type { Z3_constructor_list };
 declare class Z3_solver{}
+export type { Z3_solver };
 declare class Z3_goal{}
+export type { Z3_goal };
 declare class Z3_tactic{}
+export type { Z3_tactic };
 declare class Z3_params{}
+export type { Z3_params };
 declare class Z3_probe{}
+export type { Z3_probe };
 declare class Z3_stats{}
+export type { Z3_stats };
 declare class Z3_ast_vector{}
+export type { Z3_ast_vector };
 declare class Z3_ast_map{}
+export type { Z3_ast_map };
 declare class Z3_apply_result{}
+export type { Z3_apply_result };
 declare class Z3_func_interp{}
+export type { Z3_func_interp };
 declare class Z3_func_entry{}
+export type { Z3_func_entry };
 declare class Z3_fixedpoint{}
+export type { Z3_fixedpoint };
 declare class Z3_optimize{}
+export type { Z3_optimize };
 declare class Z3_param_descrs{}
+export type { Z3_param_descrs };
 declare class Z3_rcf_num{}
+export type { Z3_rcf_num };
 declare export function Z3_global_param_set(param_id: string,param_value: string,): void;
 declare export function Z3_mk_config(): Z3_config;
 declare export function Z3_del_config(c: Z3_config,): void;
+declare export function Z3_set_param_value(c: Z3_config,param_id: string,param_value: string,): void;
 declare export function Z3_mk_context(c: Z3_config,): Z3_context;
 declare export function Z3_mk_int_symbol(c: Z3_context,i: number,): Z3_symbol;
 declare export function Z3_mk_string_symbol(c: Z3_context,s: string,): Z3_symbol;
 declare export function Z3_mk_bool_sort(c: Z3_context,): Z3_sort;
+declare export function Z3_mk_int_sort(c: Z3_context,): Z3_sort;
 declare export function Z3_mk_const(c: Z3_context,s: Z3_symbol,ty: Z3_sort,): Z3_ast;
+declare export function Z3_mk_eq(c: Z3_context,l: Z3_ast,r: Z3_ast,): Z3_ast;
 declare export function Z3_mk_not(c: Z3_context,a: Z3_ast,): Z3_ast;
 declare export function Z3_mk_iff(c: Z3_context,t1: Z3_ast,t2: Z3_ast,): Z3_ast;
 declare export function Z3_mk_and(c: Z3_context,num_args: number,args: Array<Z3_ast>,): Z3_ast;
 declare export function Z3_mk_or(c: Z3_context,num_args: number,args: Array<Z3_ast>,): Z3_ast;
+declare export function Z3_mk_add(c: Z3_context,num_args: number,args: Array<Z3_ast>,): Z3_ast;
+declare export function Z3_mk_int(c: Z3_context,v: number,ty: Z3_sort,): Z3_ast;
 declare export function Z3_get_symbol_kind(c: Z3_context,s: Z3_symbol,): Z3_symbol_kind;
 declare export function Z3_get_symbol_int(c: Z3_context,s: Z3_symbol,): number;
 declare export function Z3_get_symbol_string(c: Z3_context,s: Z3_symbol,): string;
+declare export function Z3_model_get_const_interp(c: Z3_context,m: Z3_model,a: Z3_func_decl,): Z3_ast;
+declare export function Z3_ast_to_string(c: Z3_context,a: Z3_ast,): string;
+declare export function Z3_model_to_string(c: Z3_context,m: Z3_model,): string;
 declare export function Z3_mk_solver(c: Z3_context,): Z3_solver;
 declare export function Z3_solver_assert(c: Z3_context,s: Z3_solver,a: Z3_ast,): void;
 declare export function Z3_solver_check(c: Z3_context,s: Z3_solver,): Z3_lbool;
+declare export function Z3_solver_get_model(c: Z3_context,s: Z3_solver,): Z3_model;
 */
