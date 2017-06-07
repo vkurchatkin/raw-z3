@@ -178,6 +178,29 @@ NAN_METHOD(Z3_get_symbol_string_binding) {
   info.GetReturnValue().Set(New<String>(v1).ToLocalChecked());
 }
 
+NAN_METHOD(Z3_get_ast_kind_binding) {
+  auto v1 = Z3_get_ast_kind(static_cast<Z3_context>(GetInternalFieldPointer(info[0].As<Object>(), 0)), static_cast<Z3_ast>(GetInternalFieldPointer(info[1].As<Object>(), 0)));
+  info.GetReturnValue().Set(New<Uint32>(v1));
+}
+
+NAN_METHOD(Z3_get_numeral_int_binding) {
+  int v1;
+  auto v2 = Z3_get_numeral_int(static_cast<Z3_context>(GetInternalFieldPointer(info[0].As<Object>(), 0)), static_cast<Z3_ast>(GetInternalFieldPointer(info[1].As<Object>(), 0)), &v1);
+  info.GetReturnValue().Set(New<Boolean>(v2));
+  Nan::Set(info[2].As<Object>(), New<String>("val").ToLocalChecked(), New<Int32>(v1));
+}
+
+NAN_METHOD(Z3_model_eval_binding) {
+  Z3_ast v1;
+  auto v2 = Z3_model_eval(static_cast<Z3_context>(GetInternalFieldPointer(info[0].As<Object>(), 0)), static_cast<Z3_model>(GetInternalFieldPointer(info[1].As<Object>(), 0)), static_cast<Z3_ast>(GetInternalFieldPointer(info[2].As<Object>(), 0)), info[3].As<Boolean>()->Value(), &v1);
+  info.GetReturnValue().Set(New<Boolean>(v2));
+  auto v3 = New<ObjectTemplate>();
+  v3->SetInternalFieldCount(1);
+  Local<Object> v4 = v3->NewInstance();
+  SetInternalFieldPointer(v4, 0, v1);
+  Nan::Set(info[4].As<Object>(), New<String>("val").ToLocalChecked(), v4);
+}
+
 NAN_METHOD(Z3_model_get_const_interp_binding) {
   auto v1 = Z3_model_get_const_interp(static_cast<Z3_context>(GetInternalFieldPointer(info[0].As<Object>(), 0)), static_cast<Z3_model>(GetInternalFieldPointer(info[1].As<Object>(), 0)), static_cast<Z3_func_decl>(GetInternalFieldPointer(info[2].As<Object>(), 0)));
   auto v2 = New<ObjectTemplate>();
@@ -245,6 +268,9 @@ NAN_MODULE_INIT(Init) {
   Nan::Set(target, New<String>("Z3_get_symbol_kind").ToLocalChecked(), New<FunctionTemplate>(Z3_get_symbol_kind_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_get_symbol_int").ToLocalChecked(), New<FunctionTemplate>(Z3_get_symbol_int_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_get_symbol_string").ToLocalChecked(), New<FunctionTemplate>(Z3_get_symbol_string_binding)->GetFunction());
+  Nan::Set(target, New<String>("Z3_get_ast_kind").ToLocalChecked(), New<FunctionTemplate>(Z3_get_ast_kind_binding)->GetFunction());
+  Nan::Set(target, New<String>("Z3_get_numeral_int").ToLocalChecked(), New<FunctionTemplate>(Z3_get_numeral_int_binding)->GetFunction());
+  Nan::Set(target, New<String>("Z3_model_eval").ToLocalChecked(), New<FunctionTemplate>(Z3_model_eval_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_model_get_const_interp").ToLocalChecked(), New<FunctionTemplate>(Z3_model_get_const_interp_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_ast_to_string").ToLocalChecked(), New<FunctionTemplate>(Z3_ast_to_string_binding)->GetFunction());
   Nan::Set(target, New<String>("Z3_model_to_string").ToLocalChecked(), New<FunctionTemplate>(Z3_model_to_string_binding)->GetFunction());

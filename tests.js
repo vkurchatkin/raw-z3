@@ -3,6 +3,8 @@
 /*::
 import type {
   Z3_context,
+  Z3_ast,
+  Out,
 } from './index.js';
 */
 
@@ -35,9 +37,13 @@ const {
   Z3_model_to_string,
   Z3_model_get_const_interp,
   Z3_ast_to_string,
+  Z3_model_eval,
+  Z3_get_ast_kind,
+  Z3_get_numeral_int,
 
   Z3_INT_SYMBOL,
   Z3_STRING_SYMBOL,
+  Z3_NUMERAL_AST,
   Z3_L_FALSE,
   Z3_L_TRUE,
 } = require('./index.js');
@@ -144,8 +150,23 @@ function model() {
   assert(r === Z3_L_TRUE);
   const model = Z3_solver_get_model(ctx._c, s);
 
-  // const interp = Z3_model_get_const_interp(ctx._c, model, x);
-  // console.log(Z3_ast_to_string(ctx._c, interp));
+  const out/*: Out<Z3_ast>*/ = ({}/*: any*/);
+
+  assert(
+    Z3_model_eval(ctx._c, model, x, true, out)
+  );
+
+  assert(
+    Z3_get_ast_kind(ctx._c, out.val) === Z3_NUMERAL_AST
+  );
+
+  const num/*: Out<number>*/ = ({}/*: any*/);
+
+  assert(
+    Z3_get_numeral_int(ctx._c, out.val, num)
+  );
+
+  assert(num.val === -97);
 }
 
 

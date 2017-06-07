@@ -4,6 +4,11 @@
 const binding = (require/*:any*/)('./build/Release/binding.node');
 (module/*:any*/).exports = binding;
 
+
+// static
+
+/*:: export type Out<T> = { val: T }; */
+
 // enums
 /*::
 type Z3_lbool =
@@ -1308,6 +1313,9 @@ declare export function Z3_mk_int(c: Z3_context,v: number,ty: Z3_sort,): Z3_ast;
 declare export function Z3_get_symbol_kind(c: Z3_context,s: Z3_symbol,): Z3_symbol_kind;
 declare export function Z3_get_symbol_int(c: Z3_context,s: Z3_symbol,): number;
 declare export function Z3_get_symbol_string(c: Z3_context,s: Z3_symbol,): string;
+declare export function Z3_get_ast_kind(c: Z3_context,a: Z3_ast,): Z3_ast_kind;
+declare export function Z3_get_numeral_int(c: Z3_context,v: Z3_ast,i: Out<number>,): bool;
+declare export function Z3_model_eval(c: Z3_context,m: Z3_model,t: Z3_ast,model_completion: bool,v: Out<Z3_ast>,): bool;
 declare export function Z3_model_get_const_interp(c: Z3_context,m: Z3_model,a: Z3_func_decl,): Z3_ast;
 declare export function Z3_ast_to_string(c: Z3_context,a: Z3_ast,): string;
 declare export function Z3_model_to_string(c: Z3_context,m: Z3_model,): string;

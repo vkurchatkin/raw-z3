@@ -17,11 +17,13 @@ type Type =
   | { t: 'Uint' }
   | { t: 'Void' }
   | { t: 'String' }
+  | { t: 'Bool' }
 ;
 
 type ArgMode =
   | { t: 'In' }
   | { t: 'InArray', s: number }
+  | { t: 'Out' }
 ;
 
 type Arg = {
@@ -88,6 +90,10 @@ function resolveType(typeStr, types) {
     return { t: 'String' };
   }
 
+  if (typeStr === 'BOOL') {
+    return { t: 'Bool' };
+  }
+
   if (types[typeStr]) {
     return {
       t: 'Object',
@@ -150,6 +156,9 @@ function discoverBindings(
     'Z3_model_to_string',
     'Z3_model_get_const_interp',
     'Z3_ast_to_string',
+    'Z3_model_eval',
+    'Z3_get_ast_kind',
+    'Z3_get_numeral_int',
   ];
 
   // find enums
@@ -317,6 +326,13 @@ function discoverBindings(
             name: nativeArg.name,
             nativeType: nativeArg.type
           });
+        } else if (mode === '_out') {
+          func.args.push({
+            mode: { t: 'Out' },
+            type: resolveType(rest, types),
+            name: nativeArg.name,
+            nativeType: nativeArg.type
+          });
         } else {
           throw new Error(`${mode} args are not supported`);
         }
@@ -349,6 +365,7 @@ function getNativeType(
     case 'Symbol': return 'Z3_symbol';
     case 'Void': throw new Error('Void should not be serialized');
     case 'String': return `Z3_string`;
+    case 'Bool': throw new Error('TODO');
     default:
       /*::(type.t: null)*/;
       throw new Error(`Unexpected type ${type.t}`);
@@ -393,6 +410,24 @@ function unwrapArg(
         }
       };
     }
+
+    case 'Out': {
+      const p = scope.id();
+      writer.write(`
+        ${getNativeType(arg.type)} ${p};
+      `);
+
+      return {
+        expr: `&${p}`,
+        aliased: true,
+        cleanup: (expr) => {
+          // TODO init objects?
+          writer.write(`
+            Nan::Set(info[${index}].As<Object>(), New<String>("val").ToLocalChecked(), ${wrapType(p, arg.type, writer, scope)});
+          `);
+        }
+      };
+    }
     default:
       /*::(mode.t:null)*/
       throw new Error(`Mode ${mode.t} is not supported`);
@@ -413,6 +448,7 @@ function unwrapType(
     case 'Symbol': return `static_cast<Z3_symbol>(${wrappedExpression}.As<External>()->Value())`;
     case 'Void': throw new Error('Void should not be serialized');
     case 'String': return `*Utf8String(${wrappedExpression})`;
+    case 'Bool': return `${wrappedExpression}.As<Boolean>()->Value()`;
     default:
       /*::(type.t: null)*/;
       throw new Error(`Unexpected type ${type.t}`);
@@ -446,7 +482,7 @@ function wrapType(
     case 'Symbol': return `New<External>(${unwrappedId})`;
     case 'Void': throw new Error('Void should not be serialized');
     case 'String': return `New<String>(${unwrappedId}).ToLocalChecked()`;
-
+    case 'Bool': return `New<Boolean>(${unwrappedId})`;
     default:
       /*::(type.t: null)*/;
       throw new Error(`Unexpected type ${type.t}`);
@@ -471,6 +507,7 @@ function typeToFlow(
     case 'Symbol': return 'Z3_symbol';
     case 'Void': return 'void';
     case 'String': return 'string';
+    case 'Bool': return 'bool';
     default:
       /*::(type.t: null)*/;
       throw new Error(`Unexpected type ${type.t}`);
@@ -484,6 +521,7 @@ function argToFlow(
   switch (mode.t) {
     case 'In': return typeToFlow(arg.type, arg.nativeType);
     case 'InArray': return `Array<${typeToFlow(arg.type, arg.nativeType)}>`;
+    case 'Out': return `Out<${typeToFlow(arg.type, arg.nativeType)}>`;
     default:
       /*::(mode.t: null)*/;
       throw new Error(`Unexpected mode ${mode.t}`);
@@ -690,6 +728,11 @@ function writeBindingsFlowDecl(
 
     const binding = (require/*:any*/)('./build/Release/binding.node');
     (module/*:any*/).exports = binding;
+
+
+    // static
+
+    /*:: export type Out<T> = { val: T }; */
 
     // enums
   `);
