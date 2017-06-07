@@ -1,27 +1,9 @@
 /* @flow */
 
-/*::
-  declare class YauzlEntry {
-    fileName: string,
-  };
-
-  declare class YauzlZipFile {
-    on('entry', YauzlEntry => void): mixed;
-    on('error', mixed => void): mixed;
-    on('end', void => void): mixed;
-    readEntry(): void;
-    openReadStream(YauzlEntry, (mixed, stream$Readable) => void): void;
-  };
-
-  type Yauzl = {
-    open(string, {}, (mixed, YauzlZipFile) => void): void
-  };
-*/
-
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
-const yauzl/*: Yauzl */ = require('yauzl');
+const yauzl = require('yauzl');
 
 const Z3_VERSION = '4.5.0';
 
