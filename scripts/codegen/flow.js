@@ -91,6 +91,12 @@ export function writeBindingsFlowDecl(
     `);
   }
 
+  writer.write(`
+    declare class Z3Symbol{}
+    export type { Z3Symbol };
+
+  `);
+
   for (const type of bindings.types) {
     const jsName = typeToJS(type);
     writer.write(`

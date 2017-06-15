@@ -70,7 +70,7 @@ export function discoverBindings(
 
   const bindings = {
     funcs: [],
-    types: ['Z3_symbol'],
+    types: [],
     enums: []
   };
 

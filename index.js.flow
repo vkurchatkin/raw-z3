@@ -123,7 +123,6 @@ declare export function OutNumber(): OutT<number>
 declare export function OutVoid(): OutT<void>
 declare export function OutString(): OutT<string>
 declare export function OutBool(): OutT<bool>
-declare export function OutZ3Symbol(): OutT<Z3Symbol>
 declare export function OutConfig(): OutT<Config>
 declare export function OutContext(): OutT<Context>
 declare export function OutAst(): OutT<Ast>

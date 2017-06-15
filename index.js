@@ -698,7 +698,6 @@ module.exports.OutNumber = Out;
 module.exports.OutVoid = Out;
 module.exports.OutString = Out;
 module.exports.OutBool = Out;
-module.exports.OutZ3Symbol = Out;
 module.exports.OutConfig = Out;
 module.exports.OutContext = Out;
 module.exports.OutAst = Out;
