@@ -135,5 +135,10 @@ export function writeBindingsFlowDecl(
 
     declare var z3: Z3;
     export { z3 as Z3 };
+
+    declare class Z3Error extends Error {
+      +code: ErrorCode & number;
+    }
+    export { Z3Error };
   `);
 }

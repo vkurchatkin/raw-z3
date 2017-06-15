@@ -32,6 +32,14 @@ function resolveType(typeStr, types) {
     return { t: 'Bool' };
   }
 
+  if (typeStr === 'ERROR_CODE') {
+    return {
+      t: 'Enum',
+      name: 'Z3_error_code',
+      type: { t: 'Uint' }
+    };
+  }
+
   if (types[typeStr]) {
     return {
       t: 'Object',
@@ -98,6 +106,11 @@ export function discoverBindings(
     'Z3_model_eval',
     'Z3_get_ast_kind',
     'Z3_get_numeral_int',
+    'Z3_get_error_code',
+    'Z3_get_error_msg',
+    'Z3_inc_ref',
+    'Z3_dec_ref',
+    'Z3_mk_real_sort',
   ];
 
   // find enums

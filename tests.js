@@ -28,6 +28,11 @@ assert.equal(Z3.getSymbolString(ctx, s2), 'foo');
 const s3 = Z3.mkStringSymbol(ctx, 'тест');
 assert.equal(Z3.getSymbolString(ctx, s3), 'тест');
 
+function errors() {
+  // const ast = Z3.mkConst(ctx, s1, Z3.mkIntSort(ctx));
+  // Z3.decRef(ctx, ast);
+  // Z3.decRef(ctx, ast);
+}
 
 function deMorgan() {
    const cfg = Z3.mkConfig();
@@ -130,5 +135,6 @@ function model() {
   assert(num.unwrapUnsafe() === -97);
 }
 
+errors();
 deMorgan();
 model();

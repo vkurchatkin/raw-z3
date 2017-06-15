@@ -157,10 +157,13 @@ type Z3 = {
   delConfig(c: Config): void;
   setParamValue(c: Config, param_id: string, param_value: string): void;
   mkContext(c: Config): Context;
+  incRef(c: Context, a: Ast): void;
+  decRef(c: Context, a: Ast): void;
   mkIntSymbol(c: Context, i: number): Z3Symbol;
   mkStringSymbol(c: Context, s: string): Z3Symbol;
   mkBoolSort(c: Context): Sort;
   mkIntSort(c: Context): Sort;
+  mkRealSort(c: Context): Sort;
   mkConst(c: Context, s: Z3Symbol, ty: Sort): Ast;
   mkEq(c: Context, l: Ast, r: Ast): Ast;
   mkNot(c: Context, a: Ast): Ast;
@@ -178,6 +181,8 @@ type Z3 = {
   modelGetConstInterp(c: Context, m: Model, a: FuncDecl): Ast;
   astToString(c: Context, a: Ast): string;
   modelToString(c: Context, m: Model): string;
+  getErrorCode(c: Context): ErrorCode;
+  getErrorMsg(c: Context, err: ErrorCode): string;
   mkSolver(c: Context): Solver;
   solverAssert(c: Context, s: Solver, a: Ast): void;
   solverCheck(c: Context, s: Solver): LBool;
@@ -479,3 +484,8 @@ type Z3 = {
 
 declare var z3: Z3;
 export { z3 as Z3 };
+
+declare class Z3Error extends Error {
+  +code: ErrorCode & number;
+}
+export { Z3Error };
