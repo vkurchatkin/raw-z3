@@ -1,5 +1,10 @@
 /* @flow */
 
+import type {
+  Bindings,
+  Type,
+} from './types.js';
+
 export function functionNameToJS(
   name: string
 ): string {
@@ -40,4 +45,21 @@ export function typeToJS(
   return name
     .replace(/_[a-z]/g, ([_, ch]) => ch.toUpperCase())
     .slice(2);
+}
+
+export function getAllTypes(bindings: Bindings): Array<Type> {
+  const types = [
+    { t: 'Symbol' },
+    { t: 'Int' },
+    { t: 'Uint' },
+    { t: 'Void' },
+    { t: 'String' },
+    { t: 'Bool' }
+  ];
+
+  for (const type of bindings.types) {
+    types.push({ t:'Object', name: type });
+  }
+
+  return types;
 }

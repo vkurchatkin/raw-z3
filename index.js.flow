@@ -1,7 +1,11 @@
 // THIS FILE IS GENERATED AUTOMATICALLY, DON'T EDIT
 /* @flow */
 
-export type Out<T> = { val: T };
+declare class OutT<T> {
+  unwrap(): ?T;
+  unwrapUnsafe(): T;
+};
+
 declare class LBool{}
 export type { LBool };
 
@@ -113,7 +117,41 @@ export type { ParamDescrs };
 declare class RcfNum{}
 export type { RcfNum };
 
-export type Z3 = {
+declare export function OutZ3Symbol(): OutT<Z3Symbol>
+declare export function OutNumber(): OutT<number>
+declare export function OutNumber(): OutT<number>
+declare export function OutVoid(): OutT<void>
+declare export function OutString(): OutT<string>
+declare export function OutBool(): OutT<bool>
+declare export function OutZ3Symbol(): OutT<Z3Symbol>
+declare export function OutConfig(): OutT<Config>
+declare export function OutContext(): OutT<Context>
+declare export function OutAst(): OutT<Ast>
+declare export function OutApp(): OutT<App>
+declare export function OutSort(): OutT<Sort>
+declare export function OutFuncDecl(): OutT<FuncDecl>
+declare export function OutPattern(): OutT<Pattern>
+declare export function OutModel(): OutT<Model>
+declare export function OutLiterals(): OutT<Literals>
+declare export function OutConstructor(): OutT<Constructor>
+declare export function OutConstructorList(): OutT<ConstructorList>
+declare export function OutSolver(): OutT<Solver>
+declare export function OutGoal(): OutT<Goal>
+declare export function OutTactic(): OutT<Tactic>
+declare export function OutParams(): OutT<Params>
+declare export function OutProbe(): OutT<Probe>
+declare export function OutStats(): OutT<Stats>
+declare export function OutAstVector(): OutT<AstVector>
+declare export function OutAstMap(): OutT<AstMap>
+declare export function OutApplyResult(): OutT<ApplyResult>
+declare export function OutFuncInterp(): OutT<FuncInterp>
+declare export function OutFuncEntry(): OutT<FuncEntry>
+declare export function OutFixedpoint(): OutT<Fixedpoint>
+declare export function OutOptimize(): OutT<Optimize>
+declare export function OutParamDescrs(): OutT<ParamDescrs>
+declare export function OutRcfNum(): OutT<RcfNum>
+
+type Z3 = {
   globalParamSet(param_id: string, param_value: string): void;
   mkConfig(): Config;
   delConfig(c: Config): void;
@@ -135,8 +173,8 @@ export type Z3 = {
   getSymbolInt(c: Context, s: Z3Symbol): number;
   getSymbolString(c: Context, s: Z3Symbol): string;
   getAstKind(c: Context, a: Ast): AstKind;
-  getNumeralInt(c: Context, v: Ast, i: Out<number>): bool;
-  modelEval(c: Context, m: Model, t: Ast, model_completion: bool, v: Out<Ast>): bool;
+  getNumeralInt(c: Context, v: Ast, i: OutT<number>): bool;
+  modelEval(c: Context, m: Model, t: Ast, model_completion: bool, v: OutT<Ast>): bool;
   modelGetConstInterp(c: Context, m: Model, a: FuncDecl): Ast;
   astToString(c: Context, a: Ast): string;
   modelToString(c: Context, m: Model): string;
@@ -440,4 +478,4 @@ export type Z3 = {
 };
 
 declare var z3: Z3;
-module.exports = z3;
+export { z3 as Z3 };

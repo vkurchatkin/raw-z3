@@ -3,12 +3,14 @@
 /*::
 import type {
   Context as Z3Context,
-  Ast,
-  Out,
 } from './index.js';
 */
 
-const Z3 = require('./index.js');
+const {
+  Z3,
+  OutAst,
+  OutNumber
+} = require('./index.js');
 
 const assert = require('assert');
 
@@ -109,25 +111,24 @@ function model() {
   assert(r === Z3.L_TRUE);
   const model = Z3.solverGetModel(ctx.c, s);
 
-  const out/*: Out<Ast>*/ = ({}/*: any*/);
+  const out = OutAst();
 
   assert(
     Z3.modelEval(ctx.c, model, x, true, out)
   );
 
   assert(
-    Z3.getAstKind(ctx.c, out.val) === Z3.NUMERAL_AST
+    Z3.getAstKind(ctx.c, out.unwrapUnsafe()) === Z3.NUMERAL_AST
   );
 
-  const num/*: Out<number>*/ = ({}/*: any*/);
+  const num = OutNumber();
 
   assert(
-    Z3.getNumeralInt(ctx.c, out.val, num)
+    Z3.getNumeralInt(ctx.c, out.unwrapUnsafe(), num)
   );
 
-  assert(num.val === -97);
+  assert(num.unwrapUnsafe() === -97);
 }
-
 
 deMorgan();
 model();

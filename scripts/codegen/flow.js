@@ -12,20 +12,21 @@ import {
   functionNameToJS,
   enumOptionToJS,
   typeToJS,
+  getAllTypes,
 } from './util.js';
 
-function typeToFlow(
+export function typeToFlow(
   type: Type,
-  nativeType:string
+  nativeType?:string
 ): string {
   switch (type.t) {
     case 'Object': return typeToJS(type.name);
     case 'Int':
-      if (nativeType.startsWith('Z3'))
+      if (nativeType && nativeType.startsWith('Z3'))
         return typeToJS(nativeType);
       return 'number';
     case 'Uint':
-      if (nativeType.startsWith('Z3'))
+      if (nativeType && nativeType.startsWith('Z3'))
         return typeToJS(nativeType);
       return 'number';
     case 'Symbol': return 'Z3Symbol';
@@ -45,7 +46,7 @@ function argToFlow(
   switch (mode.t) {
     case 'In': return typeToFlow(arg.type, arg.nativeType);
     case 'InArray': return `Array<${typeToFlow(arg.type, arg.nativeType)}>`;
-    case 'Out': return `Out<${typeToFlow(arg.type, arg.nativeType)}>`;
+    case 'Out': return `OutT<${typeToFlow(arg.type, arg.nativeType)}>`;
     default:
       /*::(mode.t: null)*/;
       throw new Error(`Unexpected mode ${mode.t}`);
@@ -79,8 +80,13 @@ export function writeBindingsFlowDecl(
     // THIS FILE IS GENERATED AUTOMATICALLY, DON'T EDIT
     /* @flow */
 
-    export type Out<T> = { val: T };
+    declare class OutT<T> {
+      unwrap(): ?T;
+      unwrapUnsafe(): T;
+    };
   `);
+
+  writer.write('\n\n');
 
   for (const { name } of bindings.enums) {
     const jsName = typeToJS(name);
@@ -100,8 +106,18 @@ export function writeBindingsFlowDecl(
     `);
   }
 
+  const allTypes = getAllTypes(bindings);
+
+  for (const type of allTypes) {
+    const flowType = typeToFlow(type);
+    const fnName = 'Out'+ flowType[0].toUpperCase() + flowType.slice(1);
+    writer.write(`declare export function ${fnName}(): OutT<${flowType}>\n`);
+  }
+
+  writer.write('\n\n');
+
   writer.write(`
-    export type Z3 = {
+    type Z3 = {
   `);
   writer.push();
 
@@ -124,6 +140,6 @@ export function writeBindingsFlowDecl(
     };
 
     declare var z3: Z3;
-    module.exports = z3;
+    export { z3 as Z3 };
   `);
 }
