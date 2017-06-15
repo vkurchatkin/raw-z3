@@ -222,11 +222,20 @@ export function discoverBindings(
         throw new Error(`Native signature for ${name} not found`);
       }
 
+      let resultType = resolveType(m[2].trim(), types);
+
+      if ((resultType.t === 'Uint' || resultType.t === 'Int') && nativeSignature.resultType.startsWith('Z3_')) {
+        resultType = {
+          t: 'Enum',
+          name: nativeSignature.resultType,
+          type: resultType
+        };
+      }
+
       const func = {
         name,
         args: [],
-        resultType: resolveType(m[2].trim(), types),
-        nativeResultType: nativeSignature.resultType
+        resultType
       };
 
       let args = m[3].trim();

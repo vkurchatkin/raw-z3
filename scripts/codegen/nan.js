@@ -30,6 +30,7 @@ function getNativeType(
 )/*:string*/{
   switch (type.t) {
     case 'Object': return type.name;
+    case 'Enum': return type.name;
     case 'Int': return 'int';
     case 'Uint': return 'unsigned';
     case 'Symbol': return 'Z3_symbol';
@@ -115,6 +116,7 @@ function unwrapType(
     case 'Object': return `static_cast<${type.name}>(GetInternalFieldPointer(${wrappedExpression}.As<Object>(), 0))`;
     case 'Int': return `${wrappedExpression}.As<Int32>()->Value()`;
     case 'Uint': return `${wrappedExpression}.As<Uint32>()->Value()`;
+    case 'Enum': return `static_cast<${type.name}>(${unwrapType(wrappedExpression, type.type, writer, scope)})`;
     case 'Symbol': return `static_cast<Z3_symbol>(${wrappedExpression}.As<External>()->Value())`;
     case 'Void': throw new Error('Void should not be serialized');
     case 'String': return `*Utf8String(${wrappedExpression})`;
@@ -149,6 +151,7 @@ function wrapType(
 
     case 'Int': return `New<Int32>(${unwrappedId})`;
     case 'Uint': return `New<Uint32>(${unwrappedId})`;
+    case 'Enum': return wrapType(unwrappedId, type.type, writer, scope);
     case 'Symbol': return `New<External>(${unwrappedId})`;
     case 'Void': throw new Error('Void should not be serialized');
     case 'String': return `New<String>(${unwrappedId}).ToLocalChecked()`;

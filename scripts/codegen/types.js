@@ -2,6 +2,7 @@
 
 export type Type =
   | { t: 'Object', name: string }
+  | { t: 'Enum', name: string, type: Type }
   | { t: 'Symbol' }
   | { t: 'Int' }
   | { t: 'Uint' }
@@ -27,7 +28,6 @@ export type Func = {
   name: string,
   args: Array<Arg>,
   resultType: Type,
-  nativeResultType: string
 };
 
 export type Enum = {

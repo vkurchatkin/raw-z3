@@ -16,19 +16,13 @@ import {
 } from './util.js';
 
 export function typeToFlow(
-  type: Type,
-  nativeType?:string
+  type: Type
 ): string {
   switch (type.t) {
     case 'Object': return typeToJS(type.name);
-    case 'Int':
-      if (nativeType && nativeType.startsWith('Z3'))
-        return typeToJS(nativeType);
-      return 'number';
-    case 'Uint':
-      if (nativeType && nativeType.startsWith('Z3'))
-        return typeToJS(nativeType);
-      return 'number';
+    case 'Enum': return typeToJS(type.name);
+    case 'Int': return 'number';
+    case 'Uint': return 'number';
     case 'Symbol': return 'Z3Symbol';
     case 'Void': return 'void';
     case 'String': return 'string';
@@ -44,9 +38,9 @@ function argToFlow(
 ): string {
   const mode = arg.mode;
   switch (mode.t) {
-    case 'In': return typeToFlow(arg.type, arg.nativeType);
-    case 'InArray': return `Array<${typeToFlow(arg.type, arg.nativeType)}>`;
-    case 'Out': return `OutT<${typeToFlow(arg.type, arg.nativeType)}>`;
+    case 'In': return typeToFlow(arg.type);
+    case 'InArray': return `Array<${typeToFlow(arg.type)}>`;
+    case 'Out': return `OutT<${typeToFlow(arg.type)}>`;
     default:
       /*::(mode.t: null)*/;
       throw new Error(`Unexpected mode ${mode.t}`);
@@ -57,7 +51,7 @@ function writeFuncFlowDecl(
   func:Func,
   writer: Writer,
 ) {
-  const { name, resultType, args, nativeResultType } = func;
+  const { name, resultType, args } = func;
 
   let argsStr = '';
 
@@ -69,7 +63,7 @@ function writeFuncFlowDecl(
     argsStr += `${arg.name}: ${argToFlow(arg)}`;
   }
 
-  writer.write(`${functionNameToJS(name)}(${argsStr}): ${typeToFlow(resultType, nativeResultType)};\n`);
+  writer.write(`${functionNameToJS(name)}(${argsStr}): ${typeToFlow(resultType)};\n`);
 }
 
 export function writeBindingsFlowDecl(
