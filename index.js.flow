@@ -1,0 +1,443 @@
+// THIS FILE IS GENERATED AUTOMATICALLY, DON'T EDIT
+/* @flow */
+
+export type Out<T> = { val: T };
+declare class LBool{}
+export type { LBool };
+
+declare class SymbolKind{}
+export type { SymbolKind };
+
+declare class ParameterKind{}
+export type { ParameterKind };
+
+declare class SortKind{}
+export type { SortKind };
+
+declare class AstKind{}
+export type { AstKind };
+
+declare class DeclKind{}
+export type { DeclKind };
+
+declare class ParamKind{}
+export type { ParamKind };
+
+declare class AstPrintMode{}
+export type { AstPrintMode };
+
+declare class ErrorCode{}
+export type { ErrorCode };
+
+declare class GoalPrec{}
+export type { GoalPrec };
+
+declare class Z3Symbol{}
+export type { Z3Symbol };
+
+declare class Config{}
+export type { Config };
+
+declare class Context{}
+export type { Context };
+
+declare class Ast{}
+export type { Ast };
+
+declare class App{}
+export type { App };
+
+declare class Sort{}
+export type { Sort };
+
+declare class FuncDecl{}
+export type { FuncDecl };
+
+declare class Pattern{}
+export type { Pattern };
+
+declare class Model{}
+export type { Model };
+
+declare class Literals{}
+export type { Literals };
+
+declare class Constructor{}
+export type { Constructor };
+
+declare class ConstructorList{}
+export type { ConstructorList };
+
+declare class Solver{}
+export type { Solver };
+
+declare class Goal{}
+export type { Goal };
+
+declare class Tactic{}
+export type { Tactic };
+
+declare class Params{}
+export type { Params };
+
+declare class Probe{}
+export type { Probe };
+
+declare class Stats{}
+export type { Stats };
+
+declare class AstVector{}
+export type { AstVector };
+
+declare class AstMap{}
+export type { AstMap };
+
+declare class ApplyResult{}
+export type { ApplyResult };
+
+declare class FuncInterp{}
+export type { FuncInterp };
+
+declare class FuncEntry{}
+export type { FuncEntry };
+
+declare class Fixedpoint{}
+export type { Fixedpoint };
+
+declare class Optimize{}
+export type { Optimize };
+
+declare class ParamDescrs{}
+export type { ParamDescrs };
+
+declare class RcfNum{}
+export type { RcfNum };
+
+export type Z3 = {
+  globalParamSet(param_id: string, param_value: string): void;
+  mkConfig(): Config;
+  delConfig(c: Config): void;
+  setParamValue(c: Config, param_id: string, param_value: string): void;
+  mkContext(c: Config): Context;
+  mkIntSymbol(c: Context, i: number): Z3Symbol;
+  mkStringSymbol(c: Context, s: string): Z3Symbol;
+  mkBoolSort(c: Context): Sort;
+  mkIntSort(c: Context): Sort;
+  mkConst(c: Context, s: Z3Symbol, ty: Sort): Ast;
+  mkEq(c: Context, l: Ast, r: Ast): Ast;
+  mkNot(c: Context, a: Ast): Ast;
+  mkIff(c: Context, t1: Ast, t2: Ast): Ast;
+  mkAnd(c: Context, num_args: number, args: Array<Ast>): Ast;
+  mkOr(c: Context, num_args: number, args: Array<Ast>): Ast;
+  mkAdd(c: Context, num_args: number, args: Array<Ast>): Ast;
+  mkInt(c: Context, v: number, ty: Sort): Ast;
+  getSymbolKind(c: Context, s: Z3Symbol): SymbolKind;
+  getSymbolInt(c: Context, s: Z3Symbol): number;
+  getSymbolString(c: Context, s: Z3Symbol): string;
+  getAstKind(c: Context, a: Ast): AstKind;
+  getNumeralInt(c: Context, v: Ast, i: Out<number>): bool;
+  modelEval(c: Context, m: Model, t: Ast, model_completion: bool, v: Out<Ast>): bool;
+  modelGetConstInterp(c: Context, m: Model, a: FuncDecl): Ast;
+  astToString(c: Context, a: Ast): string;
+  modelToString(c: Context, m: Model): string;
+  mkSolver(c: Context): Solver;
+  solverAssert(c: Context, s: Solver, a: Ast): void;
+  solverCheck(c: Context, s: Solver): LBool;
+  solverGetModel(c: Context, s: Solver): Model;
+
+  +L_FALSE: LBool & number;
+  +L_UNDEF: LBool & number;
+  +L_TRUE: LBool & number;
+  +INT_SYMBOL: SymbolKind & number;
+  +STRING_SYMBOL: SymbolKind & number;
+  +PARAMETER_INT: ParameterKind & number;
+  +PARAMETER_DOUBLE: ParameterKind & number;
+  +PARAMETER_RATIONAL: ParameterKind & number;
+  +PARAMETER_SYMBOL: ParameterKind & number;
+  +PARAMETER_SORT: ParameterKind & number;
+  +PARAMETER_AST: ParameterKind & number;
+  +PARAMETER_FUNC_DECL: ParameterKind & number;
+  +UNINTERPRETED_SORT: SortKind & number;
+  +BOOL_SORT: SortKind & number;
+  +INT_SORT: SortKind & number;
+  +REAL_SORT: SortKind & number;
+  +BV_SORT: SortKind & number;
+  +ARRAY_SORT: SortKind & number;
+  +DATATYPE_SORT: SortKind & number;
+  +RELATION_SORT: SortKind & number;
+  +FINITE_DOMAIN_SORT: SortKind & number;
+  +FLOATING_POINT_SORT: SortKind & number;
+  +ROUNDING_MODE_SORT: SortKind & number;
+  +SEQ_SORT: SortKind & number;
+  +RE_SORT: SortKind & number;
+  +UNKNOWN_SORT: SortKind & number;
+  +NUMERAL_AST: AstKind & number;
+  +APP_AST: AstKind & number;
+  +VAR_AST: AstKind & number;
+  +QUANTIFIER_AST: AstKind & number;
+  +SORT_AST: AstKind & number;
+  +FUNC_DECL_AST: AstKind & number;
+  +UNKNOWN_AST: AstKind & number;
+  +OP_TRUE: DeclKind & number;
+  +OP_FALSE: DeclKind & number;
+  +OP_EQ: DeclKind & number;
+  +OP_DISTINCT: DeclKind & number;
+  +OP_ITE: DeclKind & number;
+  +OP_AND: DeclKind & number;
+  +OP_OR: DeclKind & number;
+  +OP_IFF: DeclKind & number;
+  +OP_XOR: DeclKind & number;
+  +OP_NOT: DeclKind & number;
+  +OP_IMPLIES: DeclKind & number;
+  +OP_OEQ: DeclKind & number;
+  +OP_INTERP: DeclKind & number;
+  +OP_ANUM: DeclKind & number;
+  +OP_AGNUM: DeclKind & number;
+  +OP_LE: DeclKind & number;
+  +OP_GE: DeclKind & number;
+  +OP_LT: DeclKind & number;
+  +OP_GT: DeclKind & number;
+  +OP_ADD: DeclKind & number;
+  +OP_SUB: DeclKind & number;
+  +OP_UMINUS: DeclKind & number;
+  +OP_MUL: DeclKind & number;
+  +OP_DIV: DeclKind & number;
+  +OP_IDIV: DeclKind & number;
+  +OP_REM: DeclKind & number;
+  +OP_MOD: DeclKind & number;
+  +OP_TO_REAL: DeclKind & number;
+  +OP_TO_INT: DeclKind & number;
+  +OP_IS_INT: DeclKind & number;
+  +OP_POWER: DeclKind & number;
+  +OP_STORE: DeclKind & number;
+  +OP_SELECT: DeclKind & number;
+  +OP_CONST_ARRAY: DeclKind & number;
+  +OP_ARRAY_MAP: DeclKind & number;
+  +OP_ARRAY_DEFAULT: DeclKind & number;
+  +OP_SET_UNION: DeclKind & number;
+  +OP_SET_INTERSECT: DeclKind & number;
+  +OP_SET_DIFFERENCE: DeclKind & number;
+  +OP_SET_COMPLEMENT: DeclKind & number;
+  +OP_SET_SUBSET: DeclKind & number;
+  +OP_AS_ARRAY: DeclKind & number;
+  +OP_ARRAY_EXT: DeclKind & number;
+  +OP_BNUM: DeclKind & number;
+  +OP_BIT1: DeclKind & number;
+  +OP_BIT0: DeclKind & number;
+  +OP_BNEG: DeclKind & number;
+  +OP_BADD: DeclKind & number;
+  +OP_BSUB: DeclKind & number;
+  +OP_BMUL: DeclKind & number;
+  +OP_BSDIV: DeclKind & number;
+  +OP_BUDIV: DeclKind & number;
+  +OP_BSREM: DeclKind & number;
+  +OP_BUREM: DeclKind & number;
+  +OP_BSMOD: DeclKind & number;
+  +OP_BSDIV0: DeclKind & number;
+  +OP_BUDIV0: DeclKind & number;
+  +OP_BSREM0: DeclKind & number;
+  +OP_BUREM0: DeclKind & number;
+  +OP_BSMOD0: DeclKind & number;
+  +OP_ULEQ: DeclKind & number;
+  +OP_SLEQ: DeclKind & number;
+  +OP_UGEQ: DeclKind & number;
+  +OP_SGEQ: DeclKind & number;
+  +OP_ULT: DeclKind & number;
+  +OP_SLT: DeclKind & number;
+  +OP_UGT: DeclKind & number;
+  +OP_SGT: DeclKind & number;
+  +OP_BAND: DeclKind & number;
+  +OP_BOR: DeclKind & number;
+  +OP_BNOT: DeclKind & number;
+  +OP_BXOR: DeclKind & number;
+  +OP_BNAND: DeclKind & number;
+  +OP_BNOR: DeclKind & number;
+  +OP_BXNOR: DeclKind & number;
+  +OP_CONCAT: DeclKind & number;
+  +OP_SIGN_EXT: DeclKind & number;
+  +OP_ZERO_EXT: DeclKind & number;
+  +OP_EXTRACT: DeclKind & number;
+  +OP_REPEAT: DeclKind & number;
+  +OP_BREDOR: DeclKind & number;
+  +OP_BREDAND: DeclKind & number;
+  +OP_BCOMP: DeclKind & number;
+  +OP_BSHL: DeclKind & number;
+  +OP_BLSHR: DeclKind & number;
+  +OP_BASHR: DeclKind & number;
+  +OP_ROTATE_LEFT: DeclKind & number;
+  +OP_ROTATE_RIGHT: DeclKind & number;
+  +OP_EXT_ROTATE_LEFT: DeclKind & number;
+  +OP_EXT_ROTATE_RIGHT: DeclKind & number;
+  +OP_INT2BV: DeclKind & number;
+  +OP_BV2INT: DeclKind & number;
+  +OP_CARRY: DeclKind & number;
+  +OP_XOR3: DeclKind & number;
+  +OP_BSMUL_NO_OVFL: DeclKind & number;
+  +OP_BUMUL_NO_OVFL: DeclKind & number;
+  +OP_BSMUL_NO_UDFL: DeclKind & number;
+  +OP_BSDIV_I: DeclKind & number;
+  +OP_BUDIV_I: DeclKind & number;
+  +OP_BSREM_I: DeclKind & number;
+  +OP_BUREM_I: DeclKind & number;
+  +OP_BSMOD_I: DeclKind & number;
+  +OP_PR_UNDEF: DeclKind & number;
+  +OP_PR_TRUE: DeclKind & number;
+  +OP_PR_ASSERTED: DeclKind & number;
+  +OP_PR_GOAL: DeclKind & number;
+  +OP_PR_MODUS_PONENS: DeclKind & number;
+  +OP_PR_REFLEXIVITY: DeclKind & number;
+  +OP_PR_SYMMETRY: DeclKind & number;
+  +OP_PR_TRANSITIVITY: DeclKind & number;
+  +OP_PR_TRANSITIVITY_STAR: DeclKind & number;
+  +OP_PR_MONOTONICITY: DeclKind & number;
+  +OP_PR_QUANT_INTRO: DeclKind & number;
+  +OP_PR_DISTRIBUTIVITY: DeclKind & number;
+  +OP_PR_AND_ELIM: DeclKind & number;
+  +OP_PR_NOT_OR_ELIM: DeclKind & number;
+  +OP_PR_REWRITE: DeclKind & number;
+  +OP_PR_REWRITE_STAR: DeclKind & number;
+  +OP_PR_PULL_QUANT: DeclKind & number;
+  +OP_PR_PULL_QUANT_STAR: DeclKind & number;
+  +OP_PR_PUSH_QUANT: DeclKind & number;
+  +OP_PR_ELIM_UNUSED_VARS: DeclKind & number;
+  +OP_PR_DER: DeclKind & number;
+  +OP_PR_QUANT_INST: DeclKind & number;
+  +OP_PR_HYPOTHESIS: DeclKind & number;
+  +OP_PR_LEMMA: DeclKind & number;
+  +OP_PR_UNIT_RESOLUTION: DeclKind & number;
+  +OP_PR_IFF_TRUE: DeclKind & number;
+  +OP_PR_IFF_FALSE: DeclKind & number;
+  +OP_PR_COMMUTATIVITY: DeclKind & number;
+  +OP_PR_DEF_AXIOM: DeclKind & number;
+  +OP_PR_DEF_INTRO: DeclKind & number;
+  +OP_PR_APPLY_DEF: DeclKind & number;
+  +OP_PR_IFF_OEQ: DeclKind & number;
+  +OP_PR_NNF_POS: DeclKind & number;
+  +OP_PR_NNF_NEG: DeclKind & number;
+  +OP_PR_NNF_STAR: DeclKind & number;
+  +OP_PR_CNF_STAR: DeclKind & number;
+  +OP_PR_SKOLEMIZE: DeclKind & number;
+  +OP_PR_MODUS_PONENS_OEQ: DeclKind & number;
+  +OP_PR_TH_LEMMA: DeclKind & number;
+  +OP_PR_HYPER_RESOLVE: DeclKind & number;
+  +OP_RA_STORE: DeclKind & number;
+  +OP_RA_EMPTY: DeclKind & number;
+  +OP_RA_IS_EMPTY: DeclKind & number;
+  +OP_RA_JOIN: DeclKind & number;
+  +OP_RA_UNION: DeclKind & number;
+  +OP_RA_WIDEN: DeclKind & number;
+  +OP_RA_PROJECT: DeclKind & number;
+  +OP_RA_FILTER: DeclKind & number;
+  +OP_RA_NEGATION_FILTER: DeclKind & number;
+  +OP_RA_RENAME: DeclKind & number;
+  +OP_RA_COMPLEMENT: DeclKind & number;
+  +OP_RA_SELECT: DeclKind & number;
+  +OP_RA_CLONE: DeclKind & number;
+  +OP_FD_CONSTANT: DeclKind & number;
+  +OP_FD_LT: DeclKind & number;
+  +OP_SEQ_UNIT: DeclKind & number;
+  +OP_SEQ_EMPTY: DeclKind & number;
+  +OP_SEQ_CONCAT: DeclKind & number;
+  +OP_SEQ_PREFIX: DeclKind & number;
+  +OP_SEQ_SUFFIX: DeclKind & number;
+  +OP_SEQ_CONTAINS: DeclKind & number;
+  +OP_SEQ_EXTRACT: DeclKind & number;
+  +OP_SEQ_REPLACE: DeclKind & number;
+  +OP_SEQ_AT: DeclKind & number;
+  +OP_SEQ_LENGTH: DeclKind & number;
+  +OP_SEQ_INDEX: DeclKind & number;
+  +OP_SEQ_TO_RE: DeclKind & number;
+  +OP_SEQ_IN_RE: DeclKind & number;
+  +OP_RE_PLUS: DeclKind & number;
+  +OP_RE_STAR: DeclKind & number;
+  +OP_RE_OPTION: DeclKind & number;
+  +OP_RE_CONCAT: DeclKind & number;
+  +OP_RE_UNION: DeclKind & number;
+  +OP_LABEL: DeclKind & number;
+  +OP_LABEL_LIT: DeclKind & number;
+  +OP_DT_CONSTRUCTOR: DeclKind & number;
+  +OP_DT_RECOGNISER: DeclKind & number;
+  +OP_DT_ACCESSOR: DeclKind & number;
+  +OP_DT_UPDATE_FIELD: DeclKind & number;
+  +OP_PB_AT_MOST: DeclKind & number;
+  +OP_PB_LE: DeclKind & number;
+  +OP_PB_GE: DeclKind & number;
+  +OP_PB_EQ: DeclKind & number;
+  +OP_FPA_RM_NEAREST_TIES_TO_EVEN: DeclKind & number;
+  +OP_FPA_RM_NEAREST_TIES_TO_AWAY: DeclKind & number;
+  +OP_FPA_RM_TOWARD_POSITIVE: DeclKind & number;
+  +OP_FPA_RM_TOWARD_NEGATIVE: DeclKind & number;
+  +OP_FPA_RM_TOWARD_ZERO: DeclKind & number;
+  +OP_FPA_NUM: DeclKind & number;
+  +OP_FPA_PLUS_INF: DeclKind & number;
+  +OP_FPA_MINUS_INF: DeclKind & number;
+  +OP_FPA_NAN: DeclKind & number;
+  +OP_FPA_PLUS_ZERO: DeclKind & number;
+  +OP_FPA_MINUS_ZERO: DeclKind & number;
+  +OP_FPA_ADD: DeclKind & number;
+  +OP_FPA_SUB: DeclKind & number;
+  +OP_FPA_NEG: DeclKind & number;
+  +OP_FPA_MUL: DeclKind & number;
+  +OP_FPA_DIV: DeclKind & number;
+  +OP_FPA_REM: DeclKind & number;
+  +OP_FPA_ABS: DeclKind & number;
+  +OP_FPA_MIN: DeclKind & number;
+  +OP_FPA_MAX: DeclKind & number;
+  +OP_FPA_FMA: DeclKind & number;
+  +OP_FPA_SQRT: DeclKind & number;
+  +OP_FPA_ROUND_TO_INTEGRAL: DeclKind & number;
+  +OP_FPA_EQ: DeclKind & number;
+  +OP_FPA_LT: DeclKind & number;
+  +OP_FPA_GT: DeclKind & number;
+  +OP_FPA_LE: DeclKind & number;
+  +OP_FPA_GE: DeclKind & number;
+  +OP_FPA_IS_NAN: DeclKind & number;
+  +OP_FPA_IS_INF: DeclKind & number;
+  +OP_FPA_IS_ZERO: DeclKind & number;
+  +OP_FPA_IS_NORMAL: DeclKind & number;
+  +OP_FPA_IS_SUBNORMAL: DeclKind & number;
+  +OP_FPA_IS_NEGATIVE: DeclKind & number;
+  +OP_FPA_IS_POSITIVE: DeclKind & number;
+  +OP_FPA_FP: DeclKind & number;
+  +OP_FPA_TO_FP: DeclKind & number;
+  +OP_FPA_TO_FP_UNSIGNED: DeclKind & number;
+  +OP_FPA_TO_UBV: DeclKind & number;
+  +OP_FPA_TO_SBV: DeclKind & number;
+  +OP_FPA_TO_REAL: DeclKind & number;
+  +OP_FPA_TO_IEEE_BV: DeclKind & number;
+  +OP_FPA_MIN_I: DeclKind & number;
+  +OP_FPA_MAX_I: DeclKind & number;
+  +OP_INTERNAL: DeclKind & number;
+  +OP_UNINTERPRETED: DeclKind & number;
+  +PK_UINT: ParamKind & number;
+  +PK_BOOL: ParamKind & number;
+  +PK_DOUBLE: ParamKind & number;
+  +PK_SYMBOL: ParamKind & number;
+  +PK_STRING: ParamKind & number;
+  +PK_OTHER: ParamKind & number;
+  +PK_INVALID: ParamKind & number;
+  +PRINT_SMTLIB_FULL: AstPrintMode & number;
+  +PRINT_LOW_LEVEL: AstPrintMode & number;
+  +PRINT_SMTLIB_COMPLIANT: AstPrintMode & number;
+  +PRINT_SMTLIB2_COMPLIANT: AstPrintMode & number;
+  +OK: ErrorCode & number;
+  +SORT_ERROR: ErrorCode & number;
+  +IOB: ErrorCode & number;
+  +INVALID_ARG: ErrorCode & number;
+  +PARSER_ERROR: ErrorCode & number;
+  +NO_PARSER: ErrorCode & number;
+  +INVALID_PATTERN: ErrorCode & number;
+  +MEMOUT_FAIL: ErrorCode & number;
+  +FILE_ACCESS_ERROR: ErrorCode & number;
+  +INTERNAL_FATAL: ErrorCode & number;
+  +INVALID_USAGE: ErrorCode & number;
+  +DEC_REF_ERROR: ErrorCode & number;
+  +EXCEPTION: ErrorCode & number;
+  +GOAL_PRECISE: GoalPrec & number;
+  +GOAL_UNDER: GoalPrec & number;
+  +GOAL_OVER: GoalPrec & number;
+  +GOAL_UNDER_OVER: GoalPrec & number;
+};
+
+declare var z3: Z3;
+module.exports = z3;

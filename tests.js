@@ -2,125 +2,84 @@
 
 /*::
 import type {
-  Z3_context,
-  Z3_ast,
+  Context as Z3Context,
+  Ast,
   Out,
 } from './index.js';
 */
 
-
-
-const {
-  Z3_mk_context,
-  Z3_mk_config,
-  Z3_mk_int_symbol,
-  Z3_get_symbol_kind,
-  Z3_get_symbol_int,
-  Z3_mk_string_symbol,
-  Z3_get_symbol_string,
-  Z3_del_config,
-  Z3_mk_bool_sort,
-  Z3_mk_const,
-  Z3_mk_not,
-  Z3_mk_and,
-  Z3_mk_or,
-  Z3_mk_iff,
-  Z3_mk_solver,
-  Z3_solver_assert,
-  Z3_solver_check,
-  Z3_set_param_value,
-  Z3_mk_int_sort,
-  Z3_mk_add,
-  Z3_mk_eq,
-  Z3_mk_int,
-  Z3_solver_get_model,
-  Z3_model_to_string,
-  Z3_model_get_const_interp,
-  Z3_ast_to_string,
-  Z3_model_eval,
-  Z3_get_ast_kind,
-  Z3_get_numeral_int,
-
-  Z3_INT_SYMBOL,
-  Z3_STRING_SYMBOL,
-  Z3_NUMERAL_AST,
-  Z3_L_FALSE,
-  Z3_L_TRUE,
-} = require('./index.js');
+const Z3 = require('./index.js');
 
 const assert = require('assert');
 
-const config = Z3_mk_config();
-const ctx = Z3_mk_context(config);
+const config = Z3.mkConfig();
+const ctx = Z3.mkContext(config);
 
-const s1 = Z3_mk_int_symbol(ctx, 42);
-assert(Z3_get_symbol_kind(ctx, s1) === Z3_INT_SYMBOL);
-assert(Z3_get_symbol_int(ctx, s1) === 42);
+const s1 = Z3.mkIntSymbol(ctx, 42);
+assert.equal(Z3.getSymbolKind(ctx, s1), Z3.INT_SYMBOL);
+assert.equal(Z3.getSymbolInt(ctx, s1), 42);
 
-const s2 = Z3_mk_string_symbol(ctx, 'foo');
-assert(Z3_get_symbol_kind(ctx, s2) === Z3_STRING_SYMBOL);
-assert(Z3_get_symbol_string(ctx, s2) === 'foo');
+const s2 = Z3.mkStringSymbol(ctx, 'foo');
+assert.equal(Z3.getSymbolKind(ctx, s2), Z3.STRING_SYMBOL);
+assert.equal(Z3.getSymbolString(ctx, s2), 'foo');
 
-const s3 = Z3_mk_string_symbol(ctx, 'тест');
-assert(Z3_get_symbol_string(ctx, s3) === 'тест');
-
+const s3 = Z3.mkStringSymbol(ctx, 'тест');
+assert.equal(Z3.getSymbolString(ctx, s3), 'тест');
 
 
 function deMorgan() {
-   const cfg = Z3_mk_config();
-   const ctx = Z3_mk_context(cfg);
-   Z3_del_config(cfg);
+   const cfg = Z3.mkConfig();
+   const ctx = Z3.mkContext(cfg);
 
-   const bool_sort = Z3_mk_bool_sort(ctx);
-   const symbol_x = Z3_mk_int_symbol(ctx, 0);
-   const symbol_y = Z3_mk_int_symbol(ctx, 1);
-   const x = Z3_mk_const(ctx, symbol_x, bool_sort);
-   const y = Z3_mk_const(ctx, symbol_y, bool_sort);
+   const bool = Z3.mkBoolSort(ctx);
+   const x = Z3.mkConst(
+     ctx,
+     Z3.mkStringSymbol(ctx, 'x'), bool);
 
-   /* De Morgan - with a negation around */
-   /* !(!(x && y) <-> (!x || !y)) */
-   const not_x = Z3_mk_not(ctx, x);
-   const not_y = Z3_mk_not(ctx, y);
-   const x_and_y = Z3_mk_and(ctx, 2, [x, y]);
-   const ls = Z3_mk_not(ctx, x_and_y);
-   const rs = Z3_mk_or(ctx, 2, [not_x, not_y]);
-   const conjecture = Z3_mk_iff(ctx, ls, rs);
-   const negated_conjecture = Z3_mk_not(ctx, conjecture);
+   const y = Z3.mkConst(
+     ctx,
+     Z3.mkStringSymbol(ctx, 'y'), bool);
 
-   const s = Z3_mk_solver(ctx);
-   Z3_solver_assert(ctx, s, negated_conjecture);
-   const r = Z3_solver_check(ctx, s);
+   const conjecture = Z3.mkIff(
+     ctx,
+     Z3.mkNot(ctx, Z3.mkAnd(ctx, 2, [x, y])),
+     Z3.mkOr(ctx, 2, [Z3.mkNot(ctx, x), Z3.mkNot(ctx, y)])
+   );
 
-   assert(r === Z3_L_FALSE);
+   const solver = Z3.mkSolver(ctx);
+   Z3.solverAssert(ctx, solver, Z3.mkNot(ctx, conjecture));
+   const r = Z3.solverCheck(ctx, solver);
+
+   assert(r === Z3.L_FALSE);
 }
 
 class Context {
   /*::
-  _c: Z3_context;
+  c: Z3Context;
   */
   constructor() {
-    const config = Z3_mk_config();
-    Z3_set_param_value(config, 'model', 'true');
-    this._c = Z3_mk_context(config);
+    const config = Z3.mkConfig();
+    Z3.setParamValue(config, 'model', 'true');
+    this.c = Z3.mkContext(config);
   }
 
   intVar(name) {
-    const sort = Z3_mk_int_sort(this._c);
-    const symbol = Z3_mk_string_symbol(this._c, name);
-    return Z3_mk_const(this._c, symbol, sort);
+    const sort = Z3.mkIntSort(this.c);
+    const symbol = Z3.mkStringSymbol(this.c, name);
+    return Z3.mkConst(this.c, symbol, sort);
   }
 
   int(val) {
-    const sort = Z3_mk_int_sort(this._c);
-    return Z3_mk_int(this._c, val, sort);
+    const sort = Z3.mkIntSort(this.c);
+    return Z3.mkInt(this.c, val, sort);
   }
 
   add(...arr) {
-    return Z3_mk_add(this._c, arr.length, arr);
+    return Z3.mkAdd(this.c, arr.length, arr);
   }
 
   eq(l, r) {
-    return Z3_mk_eq(this._c, l, r)
+    return Z3.mkEq(this.c, l, r)
   }
 
   bound() {
@@ -138,32 +97,32 @@ function model() {
   const ctx = new Context();
   const { int, add, eq, intVar } = ctx.bound();
 
-  const s = Z3_mk_solver(ctx._c);
+  const s = Z3.mkSolver(ctx.c);
   const x = intVar('x');
 
 
-  Z3_solver_assert(ctx._c, s,
+  Z3.solverAssert(ctx.c, s,
     eq(add(x, int(100)), int(3))
   );
-  const r = Z3_solver_check(ctx._c, s);
+  const r = Z3.solverCheck(ctx.c, s);
 
-  assert(r === Z3_L_TRUE);
-  const model = Z3_solver_get_model(ctx._c, s);
+  assert(r === Z3.L_TRUE);
+  const model = Z3.solverGetModel(ctx.c, s);
 
-  const out/*: Out<Z3_ast>*/ = ({}/*: any*/);
+  const out/*: Out<Ast>*/ = ({}/*: any*/);
 
   assert(
-    Z3_model_eval(ctx._c, model, x, true, out)
+    Z3.modelEval(ctx.c, model, x, true, out)
   );
 
   assert(
-    Z3_get_ast_kind(ctx._c, out.val) === Z3_NUMERAL_AST
+    Z3.getAstKind(ctx.c, out.val) === Z3.NUMERAL_AST
   );
 
   const num/*: Out<number>*/ = ({}/*: any*/);
 
   assert(
-    Z3_get_numeral_int(ctx._c, out.val, num)
+    Z3.getNumeralInt(ctx.c, out.val, num)
   );
 
   assert(num.val === -97);

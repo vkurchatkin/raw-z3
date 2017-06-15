@@ -9,6 +9,8 @@ import type {
   Writer,
 } from './types.js';
 
+import { functionNameToJS } from './util.js';
+
 class Scope {
   /*::
   _c: number
@@ -211,7 +213,7 @@ function writeExportsSrc(
   writer.push();
 
   for (const { name } of bindings.funcs) {
-    writer.write(`Nan::Set(target, New<String>("${name}").ToLocalChecked(), New<FunctionTemplate>(${name}_binding)->GetFunction());\n`);
+    writer.write(`Nan::Set(target, New<String>("${functionNameToJS(name)}").ToLocalChecked(), New<FunctionTemplate>(${name}_binding)->GetFunction());\n`);
   }
 
   writer.pop();

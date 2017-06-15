@@ -12,7 +12,8 @@ import type {
 } from './types.js';
 import FileWriter from './FileWriter.js';
 import { discoverBindings } from './bindings.js';
-import { writeBindingsFlowDecl } from './javascript.js';
+import { writeBindingsJs } from './javascript.js';
+import { writeBindingsFlowDecl } from './flow.js';
 import { writeBindingsSrc } from './nan.js';
 
 const path = require('path')
@@ -27,9 +28,13 @@ const bindings = discoverBindings(apiPath, apiFiles);
 
 const bindingsCppFile = path.join(__dirname, '../../binding.cc');
 const bindingsJsFile = path.join(__dirname, '../../index.js');
+const bindingsFlowFile = path.join(__dirname, '../../index.js.flow');
+
 
 const cppWriter = new FileWriter(bindingsCppFile);
 const jsWriter = new FileWriter(bindingsJsFile);
+const flowWriter = new FileWriter(bindingsFlowFile);
 
 writeBindingsSrc(bindings, cppWriter);
-writeBindingsFlowDecl(bindings, jsWriter);
+writeBindingsJs(bindings, jsWriter);
+writeBindingsFlowDecl(bindings, flowWriter);
